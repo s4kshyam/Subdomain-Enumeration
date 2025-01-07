@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subdomain Enumeration</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d;
+      color: #33ff33;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3);
+      border: 2px solid #33ff33;
+    }
+
+    h1 {
+      text-align: center;
+      color: #33ff33;
+      text-shadow: 0 0 10px #33ff33;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      background-color: #0d0d0d;
+      color: #33ff33;
+      font-family: 'Courier New', Courier, monospace;
+      transition: border-color 0.3s;
+    }
+
+    input::placeholder {
+      color: #4dff4d;
+    }
+
+    input:focus {
+      border-color: #33ff33;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      background-color: #33ff33;
+      color: #0d0d0d;
+      font-family: 'Courier New', Courier, monospace;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #29cc29;
+      transform: scale(1.05);
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #0d0d0d;
+      border: 1px solid #33ff33;
+      border-radius: 5px;
+      color: #4dff4d;
+      position: relative;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      max-height: 200px;
+      overflow-y: auto;
+      animation: slideIn 0.5s ease-in-out;
+    }
+
+    li {
+      margin: 5px 0;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .error {
+      color: #ff3333;
+      font-weight: bold;
+    }
+
+    .copy-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 10px;
+      border: none;
+      background-color: #33ff33;
+      color: #0d0d0d;
+      font-family: 'Courier New', Courier, monospace;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .copy-button:hover {
+      background-color: #29cc29;
+    }
+
+    /* Credit Section Styling */
+    .credits {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #33ff33;
+      opacity: 0;
+      animation: fadeIn 1s 1.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideIn {
+      0% {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>-Subdomain Enumeration-</h1>
+    <form id="domainForm">
+      <input type="text" id="domain" placeholder="Enter domain (e.g., example.com)" required />
+      <button type="submit">Enumerate Subdomains</button>
+    </form>
+    <div id="result" class="result"></div>
+  </div>
+
+  <!-- Credit Details -->
+  <div class="credits">
+    <p>&copy; Collab Project by Sakshyam Mishra and Aashutosh Devkota</p>
+  </div>
+
+  <script>
+    document.getElementById("domainForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const domain = document.getElementById("domain").value;
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "<span style='color: #33ff33;'>Loading...</span>";
+
+      // Example static result for demonstration purposes
+      const staticResult = ["sub1.example.com", "sub2.example.com", "sub3.example.com"];
+      resultDiv.innerHTML = `<h3>Subdomains of ${domain}:</h3>`;
+      const list = document.createElement("ul");
+      staticResult.forEach((subdomain) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = subdomain;
+        list.appendChild(listItem);
+      });
+      resultDiv.appendChild(list);
+
+      const copyButton = document.createElement("button");
+      copyButton.textContent = "Copy to Clipboard";
+      copyButton.classList.add("copy-button");
+      copyButton.addEventListener("click", () => {
+        const textToCopy = staticResult.join("\n");
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          alert("Subdomains copied to clipboard!");
+        }).catch(err => {
+          alert("Failed to copy: " + err);
+        });
+      });
+      resultDiv.appendChild(copyButton);
+    });
+  </script>
+</body>
+</html>
